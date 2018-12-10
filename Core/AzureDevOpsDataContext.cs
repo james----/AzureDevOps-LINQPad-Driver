@@ -3,6 +3,8 @@ using Microsoft.TeamFoundation.WorkItemTracking.WebApi;
 using Microsoft.VisualStudio.Services.Common;
 using Microsoft.VisualStudio.Services.WebApi;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace AzureDevOpsDataContextDriver.External
@@ -10,16 +12,18 @@ namespace AzureDevOpsDataContextDriver.External
     public class AzureDevOpsDataContext : IDisposable
     {
         VssConnection vSSConnection;
-        WorkItemTrackingHttpClient witClient;
         ProjectHttpClient projectHttpClient;
+        WorkItemTrackingHttpClient witClient;
         AzureDevOpsConnectionInfo connectionInfo;
+        AzureWorkItemQueryProvider dataProvider;
 
         public AzureDevOpsDataContext(AzureDevOpsConnectionInfo connInfo)
         {
-            connectionInfo = connInfo ?? throw new ArgumentNullException("connInfo");
-            vSSConnection = new VssConnection(new Uri(connInfo.Uri), new VssBasicCredential("pat", connInfo.Token));
-            witClient = vSSConnection.GetClient<WorkItemTrackingHttpClient>();
+            connectionInfo = connInfo ?? throw new ArgumentException($"{nameof(connInfo)} can't be null");
+            vSSConnection = new VssConnection(new Uri(connectionInfo.Url), new VssBasicCredential("pat", connInfo.Token));
             projectHttpClient = vSSConnection.GetClient<ProjectHttpClient>();
+            witClient = vSSConnection.GetClient<WorkItemTrackingHttpClient>();
+            dataProvider = new AzureWorkItemQueryProvider(connInfo, witClient);
         }
 
         public async Task<AzureWorkItem> GetWorkItem(int id)
@@ -27,8 +31,11 @@ namespace AzureDevOpsDataContextDriver.External
             return await AzureDevOpsWorkItemFactory.GetWorkItem(connectionInfo, witClient, id);
         }
 
+        public IEnumerable<AzureProject> Projects => AzureDevOpsProjectFactory.GetProjects(connectionInfo, projectHttpClient).GetAwaiter().GetResult();
 
-        #region IDisposable Support
+        public IQueryable<AzureWorkItem> WorkItems => dataProvider;
+
+        #region IDisposable
         private bool disposedValue = false;
 
         protected virtual void Dispose(bool disposing)

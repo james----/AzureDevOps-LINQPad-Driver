@@ -20,16 +20,16 @@ namespace AzureDevOpsDataContextDriver
             set { _cxInfo.Persist = value; }
         }
 
-        public string Uri
+        public string Url
         {
-            get { return (string)_driverData.Element("Uri") ?? string.Empty; }
-            set { _driverData.SetElementValue("Uri", value); }
+            get { return (string)_driverData.Element("Url") ?? string.Empty; }
+            set { _driverData.SetElementValue("Url", value); }
         }
 
         public string Token
         {
-            get { return (string)_driverData.Element("Domain") ?? string.Empty; }
-            set { _driverData.SetElementValue("Domain", value); }
+            get { return (string)_driverData.Element("Token") ?? string.Empty; }
+            set { _driverData.SetElementValue("Token", value); }
         }
     }
 }

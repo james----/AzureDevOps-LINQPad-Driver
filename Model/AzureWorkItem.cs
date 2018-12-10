@@ -25,6 +25,8 @@ namespace AzureDevOpsDataContextDriver
 
         public string State { get; set; }
 
+        public string IterationPath { get; set; }
+
         public string AssignedTo { get; set; }
 
         public string Blocked { get; set; }
@@ -51,6 +53,8 @@ namespace AzureDevOpsDataContextDriver
         }
 
         public double BacklogPriority { get; set; }
+
+        public AzureWorkItem Parent { get; set; }
 
         public IList<AzureWorkItem> Children { get; set; }
 
@@ -103,7 +107,7 @@ namespace AzureDevOpsDataContextDriver
                 }
                 else if (p.Name == "Id")
                 {
-                    custom[p.Name] = new Hyperlinq($"{item.ConnectionInfo.Uri}/_workitems/edit/{item.Id}", item.Id.ToString());
+                    custom[p.Name] = new Hyperlinq($"{item.ConnectionInfo.Url}/_workitems/edit/{item.Id}", item.Id.ToString());
                 }
                 else if (p.Name == "Elapsed")
                 {
@@ -115,6 +119,18 @@ namespace AzureDevOpsDataContextDriver
                     if (item.Children.Count > 0)
                     {
                         custom[p.Name] = item.Children.Select(c => InternalDump(c));
+                    }
+                    else
+                    {
+                        custom[p.Name] = string.Empty;
+                    }
+                    continue;
+                }
+                else if (p.Name == "Parent")
+                {
+                    if (item.Parent != null)
+                    {
+                        custom[p.Name] = item.Parent.ToDump();
                     }
                     else
                     {

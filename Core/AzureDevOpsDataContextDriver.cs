@@ -14,7 +14,7 @@ namespace AzureDevOpsDataContextDriver.AzureDevOps
 
         public override string GetConnectionDescription(IConnectionInfo cxInfo)
         {
-            return new AzureDevOpsConnectionInfo(cxInfo).Uri;
+            return new AzureDevOpsConnectionInfo(cxInfo).Url;
         }
 
         public override List<ExplorerItem> GetSchema(IConnectionInfo cxInfo, Type customType)
@@ -36,7 +36,15 @@ namespace AzureDevOpsDataContextDriver.AzureDevOps
 
         public override IEnumerable<string> GetNamespacesToRemove(IConnectionInfo cxInfo)
         {
-            return new[] { "System.Data.Linq", "System.Data.Linq.SqlClient" };
+            return new[]
+            {
+                "System.Data.Linq",
+                "System.Data.Linq.SqlClient",
+                "AzureDevOpsDataContextDriver",
+                "System.Data",
+                "AsyncFixer",
+                "AutoMapper"
+            };
         }
 
         public override IEnumerable<string> GetNamespacesToAdd(IConnectionInfo cxInfo)
@@ -59,61 +67,10 @@ namespace AzureDevOpsDataContextDriver.AzureDevOps
         public override void TearDownContext(IConnectionInfo cxInfo, object context, QueryExecutionManager executionManager, object[] constructorArguments)
         {
             base.TearDownContext(cxInfo, context, executionManager, constructorArguments);
-            var rc = context as AzureDevOpsDataContext;
-            if (rc != null)
+            if (context is AzureDevOpsDataContext rc)
             {
                 rc.Dispose();
             }
         }
-
-        /*public override ICustomMemberProvider GetCustomDisplayMemberProvider(object objectToWrite)
-        {
-            return base.GetCustomDisplayMemberProvider(objectToWrite);
-        }
-
-        public override void PreprocessObjectToWrite(ref object objectToWrite, ObjectGraphInfo info)
-        {
-            base.PreprocessObjectToWrite(ref objectToWrite, info);
-        }
-
-        public override void DisplayObjectInGrid(object objectToDisplay, GridOptions options)
-        {
-            base.DisplayObjectInGrid(objectToDisplay, options);
-        }
-
-        public override DbProviderFactory GetProviderFactory(IConnectionInfo cxInfo)
-        {
-            return base.GetProviderFactory(cxInfo);
-        }
-
-        public override IDbConnection GetIDbConnection(IConnectionInfo cxInfo)
-        {
-            return base.GetIDbConnection(cxInfo);
-        }
-
-        public override void ExecuteESqlQuery(IConnectionInfo cxInfo, string query)
-        {
-            base.ExecuteESqlQuery(cxInfo, query);
-        }
-
-        public override string GetAppConfigPath(IConnectionInfo cxInfo)
-        {
-            return base.GetAppConfigPath(cxInfo);
-        }
-
-        public override object OnCustomEvent(string eventName, params object[] data)
-        {
-            return base.OnCustomEvent(eventName, data);
-        }
-
-        public override object InitializeLifetimeService()
-        {
-            return base.InitializeLifetimeService();
-        }
-
-        public override bool AreRepositoriesEquivalent(IConnectionInfo c1, IConnectionInfo c2)
-        {
-            return base.AreRepositoriesEquivalent(c1, c2);
-        }*/
     }
 }

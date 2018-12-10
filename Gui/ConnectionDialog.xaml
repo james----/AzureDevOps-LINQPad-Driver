@@ -10,7 +10,7 @@
     WindowStartupLocation="CenterScreen">
     <StackPanel Margin="7">
         <Label Padding="0,0,0,1">Base URL:</Label>
-        <TextBox Name="txtURL" Margin="0,0,0,6" Text="{Binding Uri}"/>
+        <TextBox Name="txtURL" Margin="0,0,0,6" Text="{Binding Url}"/>
         <Label Padding="0,0,0,1">Authorization Token:</Label>
         <TextBox Name="txtToken" Margin="0,0,0,12" Text="{Binding Token}"/>
         <CheckBox IsChecked="{Binding Persist}">Remember this connection</CheckBox>

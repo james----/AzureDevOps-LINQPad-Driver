@@ -5,12 +5,10 @@ namespace AzureDevOpsDataContextDriver
 {
     public partial class ConnectionDialog : Window
     {
-        IConnectionInfo _cxInfo;
         AzureDevOpsConnectionInfo _connInfo;
 
         public ConnectionDialog(IConnectionInfo cxInfo)
         {
-            _cxInfo = cxInfo;
             _connInfo = new AzureDevOpsConnectionInfo(cxInfo);
             DataContext = _connInfo;
             InitializeComponent();
@@ -18,7 +16,7 @@ namespace AzureDevOpsDataContextDriver
 
         void btnOK_Click(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(_connInfo.Uri))
+            if (string.IsNullOrWhiteSpace(_connInfo.Url))
             {
                 MessageBox.Show("Please enter a valid Azure DevOps URL.", Title, MessageBoxButton.OK, MessageBoxImage.Error);
                 return;

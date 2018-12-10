@@ -249,8 +249,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\AzureDevOpsProjectFactory.cs" />
-    <Compile Include="Core\AzureDevOpsWorkItemFactory.cs" />
+    <Compile Include="Data\AzureDevOpsProjectFactory.cs" />
+    <Compile Include="Data\AzureDevOpsWorkItemFactory.cs" />
     <Compile Include="Core\AzureDevOpsConnectionInfo.cs" />
     <Compile Include="Core\AzureDevOpsDataContext.cs" />
     <Compile Include="Core\AzureDevOpsDataContextDriver.cs" />
@@ -260,6 +260,7 @@
     <Compile Include="Mapper\AzureProjectProfile.cs" />
     <Compile Include="Mapper\AzureWorkItemProfile.cs" />
     <Compile Include="Model\AzureProject.cs" />
+    <Compile Include="Data\AzureWorkItemQueryProvider.cs" />
     <Compile Include="Model\AzureWorkItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Gui\ConnectionDialog.xaml.cs">
@@ -267,7 +268,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="AzureDevOpsDataContextDriver.snk" />
     <None Include="packages.config" />
   </ItemGroup>
@@ -293,7 +296,8 @@
   -->
   <PropertyGroup>
     <PostBuildEvent>if $(ConfigurationName) == Debug ( 
-  powershell -Command "Get-ChildItem -Path '$(TargetDir)*' -Include '*.dll' -Recurse | Copy-Item -Destination '%25localappdata%25\LINQPad\Drivers\DataContext\4.6\$(ProjectName) (7e7bc232eb1cb80f)\' -Force"
+  powershell -Command "New-Item -ItemType Directory -Force -Path '%25localappdata%25\LINQPad\Drivers\DataContext\4.6\$(ProjectName) (7e7bc232eb1cb80f)\'"
+  powershell -Command "Get-ChildItem -Path '$(TargetDir)*' -Include *.dll, $(ProjectName).dll.config -Recurse | Copy-Item -Destination '%25localappdata%25\LINQPad\Drivers\DataContext\4.6\$(ProjectName) (7e7bc232eb1cb80f)\' -Force"
 ) ELSE (
   powershell -Command "New-Item -ItemType Directory -Force -Path '$(SolutionDir)dist\bin\'"
   powershell -Command "Get-ChildItem -Path '$(TargetDir)*' -Include '*.dll' -Recurse | Copy-Item -Destination '$(SolutionDir)dist\bin\' -Force"
@@ -313,6 +317,7 @@
   </Target>
   <Import Project="packages\Microsoft.Azure.Services.AppAuthentication.1.0.3\build\Microsoft.Azure.Services.AppAuthentication.targets" Condition="Exists('packages\Microsoft.Azure.Services.AppAuthentication.1.0.3\build\Microsoft.Azure.Services.AppAuthentication.targets')" />
   <PropertyGroup>
-    <PreBuildEvent>powershell -Command "Remove-Item '$(SolutionDir)dist\' -Force -Recurse"</PreBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
   </PropertyGroup>
 </Project>

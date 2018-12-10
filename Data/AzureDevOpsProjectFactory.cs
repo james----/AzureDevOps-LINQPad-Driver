@@ -7,10 +7,10 @@ namespace AzureDevOpsDataContextDriver
 {
     public static class AzureDevOpsProjectFactory
     {
-        public async static Task<List<AzureProject>> GetProjects(AzureDevOpsConnectionInfo connInfo, ProjectHttpClient witClient, int id)
+        public async static Task<IEnumerable<AzureProject>> GetProjects(AzureDevOpsConnectionInfo connInfo, ProjectHttpClient witClient)
         {
             var items = await witClient.GetProjects();
-            return items.Select(x => x.Map()).ToList();
+            return items.Select(x => x.Map());
         }
     }
 }
