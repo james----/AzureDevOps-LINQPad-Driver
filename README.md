@@ -2,13 +2,13 @@
 A driver which exposes interfaces to make it easy to query Azure DevOps. This driver was written to avoid the pains of using the Azure DevOps web interface.
 
 
-# Installation
+## Installation
 
 1. For installing the driver, download the latest `AzureDevOpsDataContextDriver.lpx` file from relases section.
 2. Open LINQPad and click on `Add Connection` and then click on `View more drivers` button.
 3. Once you're in the `Choose a driver` screen, since this driver has not been published as an official driver, you'd have to click on `Browse` button and select the `AzureDevOpsDataContextDriver.lpx` file.
 
-# Creating a new connection
+## Creating a new connection
 
 Once you've installed the driver and try to create a new connection it will ask for a Azure DevOps url which is typically like in the format
 
