@@ -28,7 +28,7 @@ namespace AzureDevOpsDataContextDriver
                     ["CreatedDate"] = "System.CreatedDate",
                     ["ClosedDate"] = "Microsoft.VSTS.Common.ClosedDate",
                     ["BacklogPriority"] = "Microsoft.VSTS.Common.BacklogPriority"
-                }; ;
+                };
             }
         }
 
@@ -67,18 +67,17 @@ namespace AzureDevOpsDataContextDriver
 
         IQueryable<TElement> IQueryProvider.CreateQuery<TElement>(Expression expression)
         {
-            var xx = ExecuteQueryInternal(expression) as IQueryable<TElement>;
-            return xx;
+            return ExecuteQueryInternal(expression) as IQueryable<TElement>;
         }
 
         object IQueryProvider.Execute(Expression expression)
         {
-            return ExecuteQueryInternal(expression);
+            throw new NotImplementedException();
         }
 
         TResult IQueryProvider.Execute<TResult>(Expression expression)
         {
-            return (TResult)ExecuteQueryInternal(expression);
+            throw new NotImplementedException();
         }
         #endregion
 
@@ -91,12 +90,12 @@ namespace AzureDevOpsDataContextDriver
 
         IEnumerator<AzureWorkItem> IEnumerable<AzureWorkItem>.GetEnumerator()
         {
-            return ((this as IQueryProvider).Execute<IEnumerable<AzureWorkItem>>(Expression)).GetEnumerator();
+            throw new NotImplementedException();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return ((this as IQueryProvider).Execute<IEnumerable<AzureWorkItem>>(Expression)).GetEnumerator();
+            throw new NotImplementedException();
         }
         #endregion
 
